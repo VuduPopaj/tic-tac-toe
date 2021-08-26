@@ -1,15 +1,13 @@
 import React from "react";
-import Board from "./components/Board";
-import Login from "./components/Login";
-import Navbar from "./components/Navbar";
+import Game from "./components/Game";
 
 function App() {
   return (
     <div className="App">
-      <Login />
-      <Navbar />
-      <h1 className="header">Tic Tac Toe</h1>
-      <Board />
+      {/* Game komponenta ovdje, a Login, Navbar, Endgame, Board unutar Game komponente */}
+      <Game>
+        <h1 className="header">Tic Tac Toe</h1>
+      </Game>
     </div>
   );
 }

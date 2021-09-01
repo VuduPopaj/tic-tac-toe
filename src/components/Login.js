@@ -13,8 +13,8 @@ const Login = ({ logged, setLogged }) => {
 
   const gameInit = () => {
     if (playerOne && playerTwo) {
-      localStorage.setItem("playerOne", playerOne);
-      localStorage.setItem("playerTwo", playerTwo);
+      // localStorage.setItem("playerOne", playerOne);
+      // localStorage.setItem("playerTwo", playerTwo);
       setLogged(true);
     } else if (!playerOne || !playerTwo) {
       setErrorMessage("Please enter the names of the players");

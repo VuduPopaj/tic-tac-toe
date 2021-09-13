@@ -1,42 +1,119 @@
+.tic-text {
+  color: #fff;
+}
+
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
-}
-
-.board {
+  font-size: 18px;
+  background-color: gray;
   text-align: center;
-  margin: auto;
 }
 
-.board-row {
+h1,
+h2 {
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+h1 {
+  font-size: 4.2rem;
+}
+
+h2 {
+  font-size: 1.8rem;
+}
+
+.container {
+  margin-top: 10pt;
+}
+
+.btns {
+  font-size: 25px;
+  height: 40px;
+  width: 230px;
   display: flex;
   justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  color: white;
+  border: white 3px solid;
+  background-color: transparent;
+  border-radius: 0.25em;
+  transition: all 0.5s;
+  margin-top: 10px;
+  position: relative;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -5%);
 }
 
-.btn {
-  height: 120px;
-  width: 120px;
-  font-size: 50px;
+.tic-input {
+  font-size: 25px;
+  height: 30px;
+  width: 230px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  color: white;
+  border: white 3px solid;
+  background-color: transparent;
+  border-radius: 0.25em;
+  transition: all 0.5s;
+  margin-top: 10px;
+  position: relative;
+  top: 40%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+.tic-input:hover {
+  color: #fff;
 }
 
-.header {
-  text-align: center;
-  font-size: 40px;
-  text-shadow: 2px 2px 4px #bbb;
+.restart {
+  font-size: 25px;
+  height: 40px;
+  width: 230px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-family: "Balsamiq Sans", cursive;
+  text-decoration: none;
+  color: white;
+  border: white 3px solid;
+  background-color: transparent;
+  border-radius: 0.25em;
+  transition: all 0.5s;
+  margin-top: 10px;
+  position: relative;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -5%);
 }
 
-.game-info {
-  font-size: 48px;
-  color: #424242;
-  margin-top: 20px;
-  text-align: center;
+.squares {
+  font-size: 20px;
+  height: 50px;
+  width: 50px;
+  cursor: pointer;
+  text-decoration: none;
+  color: white;
+  border: white 3px solid;
+  background-color: transparent;
+  border-radius: 0.25em;
+  transition: all 0.5s;
+  padding: 0;
+  margin: 0%;
+}
+
+.game-board {
+  display: grid;
+  width: 170px;
+  height: 170px;
+  grid-template-columns: auto auto auto;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
 }

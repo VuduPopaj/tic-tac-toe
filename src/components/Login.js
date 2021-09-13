@@ -1,87 +1,47 @@
-import React, { useState } from "react";
+import React from "react";
 
-const Login = ({ logged, setLogged }) => {
-  // const [valid, setValid] = useState(false);
-  // const [values, setValues] = useState({
-  //   playerOne: "",
-  //   playerTwo: "",
-  // });
-  const [playerOne, setPlayerOne] = useState("");
-  const [playerTwo, setPlayerTwo] = useState("");
-  // const [submitted, setSubmitted] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(false);
-
-  const gameInit = () => {
-    if (playerOne && playerTwo) {
-      // localStorage.setItem("playerOne", playerOne);
-      // localStorage.setItem("playerTwo", playerTwo);
-      setLogged(true);
-    } else if (!playerOne || !playerTwo) {
-      setErrorMessage("Please enter the names of the players");
-    }
-    setPlayerOne(playerOne);
-    setPlayerTwo(playerTwo);
+function Login({
+  playerOne,
+  playerTwo,
+  setplayerOne,
+  setplayerTwo,
+  setGameStart,
+}) {
+  const setPlayers1 = (e) => {
+    setplayerOne(e.target.value);
   };
 
-  // const inputPlayerOneChange = (e) => {
-  //   setValues((values) => ({
-  //     ...values,
-  //     playerOne: e.target.value,
-  //   }));
-  // };
+  const setPlayers2 = (e) => {
+    setplayerTwo(e.target.value);
+  };
 
-  // const inputPlayerTwoChange = (e) => {
-  //   setValues((values) => ({
-  //     ...values,
-  //     playerTwo: e.target.value,
-  //   }));
-  // };
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   if (values.playerOne && values.playerTwo) {
-  //     setValid(true);
-  //   }
-  //   setSubmitted(true);
-  // };
+  const setGameStartBtn = (e) => {
+    e.preventDefault();
+    setGameStart(false);
+  };
 
   return (
-    <div>
-      {!logged && (
-        <div>
-          <div>
-            <form>
-              <div>
-                <label>Player one</label>
-                <input
-                  type="name"
-                  value={playerOne}
-                  onChange={(e) => {
-                    setPlayerOne(e.target.value);
-                  }}
-                />
-              </div>
-              <div>
-                <label>Player two</label>
-                <input
-                  type="name"
-                  value={playerTwo}
-                  onChange={(e) => {
-                    setPlayerTwo(e.target.value);
-                  }}
-                />
-              </div>
-              <button type="button" onClick={gameInit}>
-                Start the game
-              </button>
-            </form>
-            <div>
-              <p>{errorMessage}</p>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
+    <form onSubmit={setGameStartBtn}>
+      <div className="Login"></div>
+      <h3 className="tic-text">Player 1 name</h3>
+      <input
+        className="tic-input"
+        type="text"
+        value={playerOne}
+        onChange={setPlayers1}
+        required
+      ></input>
+      <h3 className="tic-text">Player 2 name</h3>
+      <input
+        className="tic-input"
+        type="text"
+        value={playerTwo}
+        onChange={setPlayers2}
+        required
+      ></input>
+      <br />
+      <button className="btns">Start</button>
+    </form>
   );
-};
+}
 export default Login;

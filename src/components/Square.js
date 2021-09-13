@@ -1,12 +1,18 @@
 import React from "react";
 
-function Square(props) {
+function Square({ value, onClick }) {
+  const takenField = (e) => {
+    if (e.target.value === "false") {
+      return alert("Please choose unoccupied cell!");
+    } else if (e.target.value === "true") {
+      e.target.value = "false";
+      onClick();
+    }
+  };
   return (
-    <div>
-      <button className="btn" onClick={() => props.onClick()}>
-        {props.value}
-      </button>
-    </div>
+    <button className="squares" onClick={takenField} value="true">
+      {value}
+    </button>
   );
 }
 

@@ -1,86 +1,164 @@
-import React, { useEffect, useState } from "react";
-import Login from "./Login";
-import Navbar from "./Navbar";
+import React, { useState, useEffect } from "react";
+import Square from "./Square";
 import Board from "./Board";
-import calculateWinner from "./Board";
-import Endgame from "./Endgame";
 
-const Game = () => {
-  const [players, setPlayers] = useState([]);
-  const [logged, setLogged] = useState(false);
-  const [draw, setDraw] = useState(false);
-  const [winner, setWinner] = useState(false);
-  const [playerOneStatus, setPlayerOneStatus] = useState(0);
-  const [playerTwoStatus, setPlayerTwoStatus] = useState(0);
-  const [drawStatus, setDrawStatus] = useState(0);
+function Game({
+  handleEndGame,
+  setWinner,
+  playerOne,
+  playerTwo,
+  setDraw,
+  setCountOne,
+  setCountTwo,
+  countOne,
+  countTwo,
+  drawCount,
+  setDrawCount,
+  game,
+  setGame,
+}) {
+  const [squares, setSquares] = useState(Array(9).fill(null));
+  const [isXNext, setIsXNext] = useState(true);
+  const nextSymbol = isXNext ? "X" : "O";
+  const nextPlayer = isXNext ? playerOne : playerTwo;
+  const winner = calculateWinner(squares);
 
-  const startAgain = () => {
-    setWinner(false);
-    setDraw(false);
-  };
-
-  const gameRestart = () => {
-    window.location.reload();
-    localStorage.clear();
-  };
-
-  useEffect(() => {
-    if (localStorage.getItem("Players")) {
-      setPlayers(JSON.parse(localStorage.getItem("Players")));
+  function getStatus() {
+    if (winner === "X") {
+      setWinner(playerOne);
+      setCountOne(countOne + 1);
+      setGame([...game, gameData]);
+      return handleEndGame(true);
+    } else if (winner === "O") {
+      setWinner(playerTwo);
+      setCountTwo(countTwo + 1);
+      setGame([...game, gameData]);
+      return handleEndGame(true);
+    } else if (isBoardFull(squares)) {
+      setDrawCount(drawCount + 1);
+      setDraw(true);
+      setGame([...game, gameDataDraw]);
+      return handleEndGame(true);
+    } else {
+      return (
+        <h4 className="tic-text">
+          Your move {nextPlayer}, your symbol is {nextSymbol}!
+        </h4>
+      );
     }
-  }, []);
+  }
+
+  var today = new Date(),
+    timeShow =
+      today.getDate() +
+      "." +
+      (today.getMonth() + 1) +
+      " " +
+      today.getHours() +
+      ":" +
+      today.getMinutes() +
+      ":" +
+      today.getSeconds();
+
+  const gameDataDraw = {
+    time: timeShow,
+    nameOne: playerOne,
+    nameTwo: playerTwo,
+    result: "Draw!",
+  };
+  const gameData = {
+    time: timeShow,
+    nameOne: playerOne,
+    nameTwo: playerTwo,
+    result: winner + "Won",
+  };
+
+  // Postovani mentori,
+  // istrazivao sam gresku koju izbacuje konzola
+  // "index.js:1 Warning: Cannot update a component (`App`) while rendering a different component (`Game`)."
+  // na oficijelnoj stranici https://github.com/facebook/react/issues/18178#issuecomment-595846312,
+  // ali nisam u mogucnosti da odgonetnem koji dio koda moram da ubacim u useEffect da bi greska nestala.
 
   useEffect(() => {
-    localStorage.setItem("Players", JSON.stringify(players));
-  }, [players]);
+    localStorage.setItem("gamehistory", JSON.stringify(game));
+  }, [game]);
 
-  //provjeriti sta ima u localStorage
-  // treba cuvati imena player-a u localStorage:
-  // to moze biti jedan objekat ili 2 razlicita key-a
+  function renderSquare(i) {
+    return (
+      <Square
+        value={squares[i]}
+        onClick={() => {
+          if (squares[i] != null || winner != null) {
+            return;
+          }
+          const nextSquares = squares.slice();
+          nextSquares[i] = nextSymbol;
+          setSquares(nextSquares);
+          setIsXNext(!isXNext);
+        }}
+      />
+    );
+  }
+
+  function renderRestartButton() {
+    return (
+      <Board
+        onClick={() => {
+          setSquares(Array(9).fill(null));
+          setIsXNext(true);
+        }}
+      />
+    );
+  }
 
   return (
-    <div>
-      {!logged && <Login setLogged={setLogged} logged={logged} />}
-      {/* A u zasebnom divu da budu:
-    <div>
-    
-      <Navbar />
-      <h1 className="header">Tic Tac Toe</h1>
-      <Board />
-    </div> */}
-      <div>
-        {logged && (
-          <Navbar
-            players={players}
-            gameRestart={gameRestart}
-            playerOneStatus={playerOneStatus}
-            playerTwoStatus={playerTwoStatus}
-            drawStatus={drawStatus}
-          />
-        )}
-        {logged && (
-          <Board
-            players={players}
-            calculateWinner={calculateWinner}
-            setWinner={setWinner}
-            setDraw={setDraw}
-            playerOneStatus={playerOneStatus}
-            setPlayerOneStatus={setPlayerOneStatus}
-            playerTwoStatus={playerTwoStatus}
-            setPlayerTwoStatus={setPlayerTwoStatus}
-            drawStatus={drawStatus}
-            setDrawStatus={setDrawStatus}
-          />
-        )}
-        {logged && winner && (
-          <Endgame startAgain={startAgain} winner={winner} setDraw={setDraw} />
-        )}
-        {logged && draw && (
-          <Endgame startAgain={startAgain} winner={winner} draw={draw} />
-        )}
+    <div className="container">
+      <div className="game">
+        <div className="game-board">
+          {renderSquare(0)}
+          {renderSquare(1)}
+          {renderSquare(2)}
+          {renderSquare(3)}
+          {renderSquare(4)}
+          {renderSquare(5)}
+          {renderSquare(6)}
+          {renderSquare(7)}
+          {renderSquare(8)}
+        </div>
+        <div className="game-info">{getStatus()}</div>
+        <div className="restart-button">{renderRestartButton()}</div>
       </div>
     </div>
   );
-};
+}
 
+function calculateWinner(squares) {
+  const possibleLines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+
+  for (let i = 0; i < possibleLines.length; i++) {
+    const [a, b, c] = possibleLines[i];
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      return squares[a];
+    }
+  }
+  return null;
+}
+
+function isBoardFull(squares) {
+  for (let i = 0; i < squares.length; i++) {
+    if (squares[i] == null) {
+      return false;
+    }
+  }
+  return true;
+}
 export default Game;
